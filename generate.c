@@ -1,7 +1,6 @@
 //Matthew Pendlebury 2023
 //This code is free to use/modify commercially or personally however you want, I'd appreciate 
-//a mention but I am not going to loose legal attack dogs to hunt you down. 
-//but my hope is that it helps you.  
+//a mention but I am not going to loose legal attack dogs to hunt you down. Hope it helps!
 
 
 //Open an existing valid HEIC file.  
