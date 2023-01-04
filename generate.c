@@ -53,12 +53,20 @@ int main (int argc, char **argv)
 
     num_images = atoi(argv[2]); 
 
-    //generate random bytes
+    //generate some session random bytes - start with unix time and then fille the rest up with
+    //some randomness.  
 
+    
     unsigned long unix_time = (unsigned long)time(NULL);
     memcpy(session_random, &unix_time, sizeof(unsigned long)); // should be good enough for one run a second. 
-//TODO add some random bytes
 
+    //fill up with some random bytes
+    srand (time(NULL));
+    for (int n = 0; n < NUM_RANDOM_BYTES-sizeof(unsigned long); n++)
+    {
+        session_random[sizeof(unsigned long)+n] = random() % 256;
+    }
+    
 
     //load in src file
     if ((fp_src = fopen(argv[1], "rb")) == NULL)
@@ -93,6 +101,7 @@ int main (int argc, char **argv)
 // Write the session munge 
 
     memcpy(src_buffer+offset-NUM_RANDOM_BYTES, session_random, NUM_RANDOM_BYTES); //TODO magic num
+
 
 //Main image munging loop.  
 
@@ -130,3 +139,4 @@ void PrintUsage()
         fprintf(stderr, "e.g.   program source.heic 10000 \n");
 
 }
+
