@@ -113,7 +113,7 @@ int main (int argc, char **argv)
             fprintf(stderr, "Can't create file %s exiting\n", filename_out);
             exit(-4);
         }
-        printf("writing file %s, (%d/%s)\n", filename_out, n+1, argv[2]);
+        printf("writing file %s, (%lu/%s)\n", filename_out, n+1, argv[2]);
         
         fwrite(src_buffer, file_sz, 1, fp_out);
         fclose(fp_out);
