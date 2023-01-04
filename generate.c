@@ -1,7 +1,7 @@
 //Matthew Pendlebury 2023
 //This code is free to use/modify commercially or personally however you want, I'd appreciate 
 //a mention but I am not going to loose legal attack dogs to hunt you down. 
-//but my hope is that it helps you.  
+//Hope it helps you in whatever you are doing. 
 
 
 //Open an existing valid HEIC file.  
@@ -27,7 +27,7 @@
 #include <time.h>
 #include <string.h>
 
-void PrintUsage();
+void showusage();
 
 #define NUM_RANDOM_BYTES 32
 
@@ -40,14 +40,14 @@ int main (int argc, char **argv)
     char *src_buffer = NULL;
     int offset = -1;  //Where we will write the modifying data (session before, counter after)
                       //is later set to source filesize/2
-                             
+
     char* output_prefix = "outputfile";
     char* output_suffix = ".HEIC";  //Doesn't check just names things like this
 
 
     if (argc != 3)
     {
-        PrintUsage();
+        showusage();
         exit (-1);
     }
 
@@ -55,8 +55,8 @@ int main (int argc, char **argv)
 
     //generate some session random bytes - start with unix time and then fille the rest up with
     //some randomness.  
-
     
+    //unix time
     unsigned long unix_time = (unsigned long)time(NULL);
     memcpy(session_random, &unix_time, sizeof(unsigned long)); // should be good enough for one run a second. 
 
@@ -64,10 +64,9 @@ int main (int argc, char **argv)
     srand (time(NULL));
     for (int n = 0; n < NUM_RANDOM_BYTES-sizeof(unsigned long); n++)
     {
-        session_random[sizeof(unsigned long)+n] = random() % 256;
+        session_random[sizeof(unsigned long)+n] = rand() % 256;
     }
     
-
     //load in src file
     if ((fp_src = fopen(argv[1], "rb")) == NULL)
     {
@@ -81,7 +80,6 @@ int main (int argc, char **argv)
     src_buffer = malloc (file_sz ); 
 
     printf("Source file size is %d\n", file_sz);
-
 
     if(fread(src_buffer, 1, file_sz, fp_src) != file_sz)
     {
@@ -132,11 +130,11 @@ int main (int argc, char **argv)
 
 } //main 
 
-
-void PrintUsage()
+//Shows the usage information for this file
+void showusage()
 {
-   fprintf(stderr, "Wrong number parameters - Usage: //usage: program.exe source_filename numimages\n");
-        fprintf(stderr, "e.g.   program source.heic 10000 \n");
+   fprintf(stderr, "Wrong number parameters - Usage: //usage: generate source_filename numimages\n");
+        fprintf(stderr, "e.g.   ./generate source.IMG 10000 \n");
 
 }
 
